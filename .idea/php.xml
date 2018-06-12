@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$USER_HOME$/Dependencies/Math-master" />
+      <path value="$USER_HOME$/Downloads/PocketMine-MP-master (2)/PocketMine-MP-master/src" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+</project>

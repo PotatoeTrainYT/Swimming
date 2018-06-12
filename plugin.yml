@@ -1,0 +1,9 @@
+name: Swimming
+description: Allow players to swim in water
+
+main: Swimming\Main
+version: 0.1
+api: [3.0.0, 3.0.0-ALPHA12]
+
+author: Potatoe
+website: https://github.com/PotatoeTrainYT/Swimming
