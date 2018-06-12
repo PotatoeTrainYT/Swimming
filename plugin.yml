@@ -2,7 +2,7 @@ name: Swimming
 description: Allow players to swim in water
 
 main: Swimming\Main
-version: 0.1
+version: 0.2
 api: [3.0.0, 3.0.0-ALPHA12]
 
 author: Potatoe

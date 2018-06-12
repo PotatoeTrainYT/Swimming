@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Swimming;
 
-use pocketmine\block\Water;
 use pocketmine\entity\Entity;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -19,25 +18,25 @@ class Main extends PluginBase implements Listener{
 
     public function onMove(PlayerMoveEvent $event): void{
         $player = $event->getPlayer();
-        if($player->getLevel()->getBlockAt($player->getFloorX(), $player->getFloorY(), $player->getFloorZ()) instanceof Water){
-            if(!$player->getGenericFlag($player::DATA_FLAG_SWIMMING)){
-                $player->setGenericFlag($player::DATA_FLAG_SWIMMING, true);
-                $eid = Entity::$entityCount++;
-                $pk = new PlayerActionPacket();
-                $pk->entityRuntimeId = $eid;
-                $pk->putBlockPosition($player->getFloorX(), $player->getFloorY(), $player->getFloorZ());
-                $pk->action = $pk::ACTION_START_SWIMMING;
-                $this->getServer()->broadcastPacket($this->getServer()->getOnlinePlayers(), $pk);
-            }else{
-                $player->setGenericFlag($player::DATA_FLAG_SWIMMING, false);
-                $eid = Entity::$entityCount++;
-                $pk = new PlayerActionPacket();
-                $pk->entityRuntimeId = $eid;
-                $pk->putBlockPosition($player->getFloorX(), $player->getFloorY(), $player->getFloorZ());
-                $pk->action = $pk::ACTION_STOP_SWIMMING;
-                $this->getServer()->broadcastPacket($this->getServer()->getOnlinePlayers(), $pk);
-                $player->setGenericFlag($player::DATA_FLAG_SWIMMING, false);
-            }
+        if(!$player->isInsideOfWater()) return;
+        if($player->getGenericFlag($player::DATA_FLAG_SWIMMING) && $player->isSprinting()) return;
+        if(!$player->getGenericFlag($player::DATA_FLAG_SWIMMING) && $player->isSprinting()){
+            $player->setGenericFlag($player::DATA_FLAG_SWIMMING, true);
+            $eid = Entity::$entityCount++;
+            $pk = new PlayerActionPacket();
+            $pk->entityRuntimeId = $eid;
+            $pk->putBlockPosition($player->getFloorX(), $player->getFloorY(), $player->getFloorZ());
+            $pk->action = $pk::ACTION_START_SWIMMING;
+            $this->getServer()->broadcastPacket($this->getServer()->getOnlinePlayers(), $pk);
+        }else{
+            $player->setGenericFlag($player::DATA_FLAG_SWIMMING, false);
+            $eid = Entity::$entityCount++;
+            $pk = new PlayerActionPacket();
+            $pk->entityRuntimeId = $eid;
+            $pk->putBlockPosition($player->getFloorX(), $player->getFloorY(), $player->getFloorZ());
+            $pk->action = $pk::ACTION_STOP_SWIMMING;
+            $this->getServer()->broadcastPacket($this->getServer()->getOnlinePlayers(), $pk);
+            $player->setGenericFlag($player::DATA_FLAG_SWIMMING, false);
         }
     }
 }
